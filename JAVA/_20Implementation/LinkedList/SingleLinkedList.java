@@ -1,6 +1,6 @@
 package JAVA._20Implementation.LinkedList;
 
- class node {
+class node {
     node next;
     int val;
     node(int val){
@@ -10,17 +10,16 @@ package JAVA._20Implementation.LinkedList;
 
 class SLL{
     private node head;
+    private int size=0;
     public  void insert_At_head(int val){
         node temp = new node(val);
-        if(head == null){
-            head=temp;
-            return;
-        }
         temp.next=head;
         head=temp;
+        size++;
     }
     public void insert_At_end(int val){
         node temp = new node(val);
+        size++;
         if(head == null){
             head=temp;
             return;
@@ -30,8 +29,13 @@ class SLL{
             t=t.next;
         }
         t.next=temp;
+
     }
     public void display(){
+        if(head == null) {
+            System.out.println("Empty linked list");
+            return;
+        }
         node t = head;
         while(t != null){
             System.out.print(t.val + " ");
@@ -41,6 +45,19 @@ class SLL{
     }
 
     public void insert_At_Index(int val , int index){
+        if(index>size || index < 0) {
+            System.out.println("Invalid Index");
+            return ;
+        }
+
+        if(index == 0) {
+            insert_At_head(val);
+            return;
+        }
+        if(index == size) {
+            insert_At_end(val);
+            return;
+        }
         node temp = new node(val);
         node t = head;
         for(int i=0;i<index-1;i++){
@@ -48,41 +65,61 @@ class SLL{
         }
         temp.next=t.next;
         t.next=temp;
+        size++;
     }
     public void size(){
-
-        node t = head;
-        int count=0;
-        while(t != null){
-            t=t.next;
-            count++;
-        }
-        System.out.println("size :- " + count);
+        System.out.println("size :- " + size);
     }
     public void deleteAtHead(){
-        if(head == null)return ;
+        if(head == null) {
+            size=0;
+            return;
+        }
         head=head.next;
+        size--;
     }
     public void deleteAtEnd(){
-        if(head == null)return ;
+        if(head == null || head.next == null){
+            head=null;
+            size=0;
+            return ;
+        }
         node t = head;
-
         while(t.next.next != null){
             t=t.next;
         }
         t.next=null;
+        size--;
     }
     public void deleteAtIndex(int idx){
-        if(head == null)return ;
+        if(idx>=size || idx < 0) {
+            System.out.println("Invalid Index");
+            return;
+        }
+        if(head == null) {
+            System.out.println("Empty linked list");
+            return;
+        }
+        if(idx == 0) {
+            deleteAtHead();
+            return;
+        }
+
         node t = head;
         for(int i=0;i<idx-1;i++){
+
             t=t.next;
         }
         t.next=t.next.next;
+        size--;
     }
     public void get(int idx){
-        if(idx< 0){
-            System.out.println("Invalid Index idx < 0");
+        if(head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+        if(idx< 0 || idx > size-1){
+            System.out.println("Invalid Index");
             return;
         }
         if(idx == 0) {
@@ -91,37 +128,33 @@ class SLL{
         }
         node t = head;
         for(int i=0;i<idx;i++){
-            if(t==null){
-                System.out.println("Invalid Index");
-                System.out.println("size of linked list is " + i);
-                return;
-            }
+
             t=t.next;
         }
         System.out.println(  " value at  index "+idx +"is :- " + t.val);
     }
     public void set(int val, int idx){
-        if(idx< 0){
-            System.out.println("Invalid Index idx < 0");
+        if(head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+        if(idx< 0 || idx > size-1){
+            System.out.println("Invalid Index ");
             return;
         }
         if(idx == 0) {
             head.val=val;
+            return;
         }
         node t = head;
         for(int i=0;i<idx;i++){
-            if(t==null){
-                System.out.println("Invalid Index");
-                System.out.println("size of linked list is " + i);
-                return;
-            }
             t=t.next;
         }
         t.val=val;
     }
 }
 
- public class SingleLinkedList {
+public class SingleLinkedList {
     public static void main(String[] args) {
         SLL ob = new SLL();
         ob.insert_At_head(2);
@@ -144,5 +177,11 @@ class SLL{
         ob.display();
         ob.get(0);
         ob.get(3);
+        ob.display();
+        ob.set(4,2);
+        ob.display();
+        ob.size();
+        ob.set(5,3);
+        ob.display();
     }
 }
